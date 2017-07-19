@@ -37,7 +37,7 @@ class fileReader () :
 					tokens = self.regex2.split(sent)
 					sentence = list()
 					for token in tokens :
-						if token :
+						if token and self.__mask(token):
 							sentence.append([self.__mask(token), self.__unicode_decomp(token)])
 					if sentence :
 						sentences.append(sentence)
