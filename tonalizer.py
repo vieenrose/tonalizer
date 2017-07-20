@@ -1,16 +1,22 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys, re, codecs, time, os, collections, argparse, itertools
+import sys, re, codecs, time, os, collections, argparse, itertools, unicodedata, sys, fnmatch
 
 from nltk.tag.crf import CRFTagger
-import nltk.tag.util
 import pycrfsuite
-from differential_tone_coding import apply_filter_to_base_element, get_features_customised, get_duration, sampling, csv_export, unzip, encoder_tones, accuray2, get_sub_tone_code_of_sentence, accumulate_tone_code_of_dataset, reshape_tokens_as_sentnece, make_tokens_from_sentence, make_features_from_tokens
-import fileReader
-import unicodedata
 
-import codecs, sys, fnmatch
+from differential_tone_coding import \
+	apply_filter_to_base_element, \
+	get_features_customised, get_duration, \
+	sampling, csv_export, unzip, encoder_tones, \
+	accuray2, get_sub_tone_code_of_sentence, \
+	accumulate_tone_code_of_dataset, \
+	reshape_tokens_as_sentnece, \
+	make_tokens_from_sentence, \
+	make_features_from_tokens
+import fileReader
+
 sys.stdin = codecs.getreader('utf8')(sys.stdin)
 sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 
@@ -24,18 +30,18 @@ def main():
 	aparser.add_argument('-e', '--evalsize', help='Percent of training data with respect to training and test one (default 10)', default=10, type=float)
 	aparser.add_argument('-c', '--chunkmode', help='Chunking mode specification which is effective only for tone (default 3)', default=3, type=int)
 
-	aparser.add_argument('-d', '--diacrtize', help='Use model F to diacritize raw text', default=None)
+	aparser.add_argument('-d', '--diacritize', help='Use model F to diacritize raw text', default=None)
 	aparser.add_argument('-f', '--filtering', help='Keep only one insertion for one poistion', default=False, action='store_true')
 
 
-	aparser.add_argument('-i', '--infile' , help='Input file (.html)' , default=sys.stdin)
-	aparser.add_argument('-o', '--outfile', help='Output file (.html)', default=sys.stdout)
+	aparser.add_argument('-m','--markers' , help='custumed set of markers to learn' , default=None, type=lambda s: unicode(s, 'utf8'))
+	aparser.add_argument('-i','--infile' , help='Input file (.txt)' , default=sys.stdin, type=lambda s: unicode(s, 'utf8'))
+	aparser.add_argument('-o','--outfile', help='Output file (.txt)', default=sys.stdout, type=lambda s: unicode(s, 'utf8'))
 	aparser.add_argument('-s', '--store', help='Store evaluation resault in file (.csv) for further research purpose', default=None)
 
 	args = aparser.parse_args()
 
-	if not args.learn and not args.disambiguate :
-		print u'\nAvertissement : il faut choisir l\'option learn pour entraîner un modèle ou disambiguate pour diacritiser avec un modèle ! \n'
+	if not (args.learn or (args.diacritize and args.outfile and args.infile)) :
 		aparser.print_help()
 		exit(0)
 
@@ -44,12 +50,13 @@ def main():
 		dico = vars(args)
 		for key,val in dico.items():
 			typeName = type(val).__name__
-			sys.stdout.write("\t{} = {} ".format(key, val))
+			sys.stdout.write(u"\t{} = {} ".format(key, val))
 			if val :
-				sys.stdout.write("({})".format(typeName))
+				sys.stdout.write(u"({})".format(typeName))
 			print ""
 
 	if args.learn :
+
 		print 'Make list of files'
 		path = u"../Tashkeela-arabic-diacritized-text-utf8-0.3/texts.txt/"
 
@@ -58,9 +65,8 @@ def main():
 		    for filename in fnmatch.filter(filenames, u'*.txt'):
 		        allfiles.append(os.path.join(root, filename))
 
-		allfiles = [u"../Tashkeela-arabic-diacritized-text-utf8-0.3/texts.txt/موطأ مالك.txt"]
-
-		fr = fileReader.fileReader(u"".join([unichr(x) for x in range(0x064B, 0x0652 + 1)]))
+		#fr = fileReader.fileReader(u"".join([unichr(x) for x in range(0x064B, 0x0652 + 1)]))
+		fr = fileReader.fileReader(args.markers)
 		allsents = []
 		print 'Making observation data from disambiggated corpus of which'
 		for infile in allfiles:
@@ -164,7 +170,7 @@ def main():
 		if args.verbose and args.store :
 			print ("Tagged result is exported in {}".format(args.store))
 
-	elif args.disambiguate and args.infile and args.outfile :
+	elif args.diacritize and args.infile and args.outfile :
 
 		pass
 		"""
@@ -175,9 +181,9 @@ def main():
 			print "Error : unable to open the input file {} !".format(args.infile)
 			exit(1)
 		try :
-			myzip = zipfile.ZipFile(args.disambiguate, 'r')
+			myzip = zipfile.ZipFile(args.diacritize, 'r')
 		except IOError:
-			print "Error : unable to open the model file {} !".format((args.disambiguate + '.zip'))
+			print "Error : unable to open the model file {} !".format((args.diacritize + '.zip'))
 			exit(1)
 
 		num_phases = 2 * len(mode_indicators)
