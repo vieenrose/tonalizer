@@ -35,13 +35,13 @@ def main():
 
 
 	aparser.add_argument('-m','--markers' , help='custumed set of markers to learn' , default=None, type=lambda s: unicode(s, 'utf8'))
-	aparser.add_argument('-i','--infile' , help='Input file (.txt)' , default=sys.stdin, type=lambda s: unicode(s, 'utf8'))
+	aparser.add_argument('infile' , help='Input file (.txt)' , default=sys.stdin, type=lambda s: unicode(s, 'utf8'))
 	aparser.add_argument('-o','--outfile', help='Output file (.txt)', default=sys.stdout, type=lambda s: unicode(s, 'utf8'))
 	aparser.add_argument('-s', '--store', help='Store evaluation resault in file (.csv) for further research purpose', default=None)
 
 	args = aparser.parse_args()
 
-	if not (args.learn or (args.diacritize and args.outfile and args.infile)) :
+	if not ((args.learn and args.infile) or (args.diacritize and args.outfile and args.infile)) :
 		aparser.print_help()
 		exit(0)
 
@@ -57,33 +57,32 @@ def main():
 
 	if args.learn :
 
-		print 'Make list of files'
-		path = u"../Tashkeela-arabic-diacritized-text-utf8-0.3/texts.txt/"
-
+		#print 'Make list of files'
+		#path = u"../Tashkeela-arabic-diacritized-text-utf8-0.3/texts.txt/"
+		"""
 		allfiles = []
 		if isinstance(path,unicode) : path = path.encode('utf-8')
 		for root, dirnames, filenames in os.walk(path):
 		    for filename in fnmatch.filter(filenames, '*.txt'):
 		        allfiles.append(os.path.join(root, filename))
-
+		"""
 		#fr = fileReader.fileReader(u"".join([unichr(x) for x in range(0x064B, 0x0652 + 1)]))
 		fr = fileReader.fileReader(args.markers)
 		allsents = []
 		print 'Making observation data from disambiggated corpus of which'
-		for infile in allfiles:
-			if infile :
-				if isinstance(infile,str) :
-					print u'\t', infile.decode('utf-8')
-				else :
-					print u'\t', infile
-				sent = []
-				for sentence in fr.read(infile) :
-					for token in sentence :
-						sent.append((token[0], token[1].encode('utf-8')))
-
-					if len(sent) > 1:
-						allsents.append(sent)
-						sent = []
+		#for infile in allfiles:
+		if args.infile :
+			if isinstance(args.infile,str) :
+				print u'\t', args.infile.decode('utf-8')
+			else :
+				print u'\t', args.infile
+			sent = []
+			for sentence in fr.read(args.infile) :
+				for token in sentence :
+					sent.append((token[0], token[1].encode('utf-8')))
+				if len(sent) > 1:
+					allsents.append(sent)
+					sent = []
 
 		print 'Token segmentation and tonal informaiotn compression'
 		enc = encoder_tones()
