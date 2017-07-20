@@ -61,8 +61,9 @@ def main():
 		path = u"../Tashkeela-arabic-diacritized-text-utf8-0.3/texts.txt/"
 
 		allfiles = []
+		if isinstance(path,unicode) : path = path.encode('utf-8')
 		for root, dirnames, filenames in os.walk(path):
-		    for filename in fnmatch.filter(filenames, u'*.txt'):
+		    for filename in fnmatch.filter(filenames, '*.txt'):
 		        allfiles.append(os.path.join(root, filename))
 
 		#fr = fileReader.fileReader(u"".join([unichr(x) for x in range(0x064B, 0x0652 + 1)]))
@@ -71,7 +72,10 @@ def main():
 		print 'Making observation data from disambiggated corpus of which'
 		for infile in allfiles:
 			if infile :
-				print u'\t', infile
+				if isinstance(infile,str) :
+					print u'\t', infile.decode('utf-8')
+				else :
+					print u'\t', infile
 				sent = []
 				for sentence in fr.read(infile) :
 					for token in sentence :
