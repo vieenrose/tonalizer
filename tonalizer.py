@@ -20,7 +20,6 @@ import fileReader
 sys.stdin = codecs.getreader('utf8')(sys.stdin)
 sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 
-
 def main():
 
 	aparser = argparse.ArgumentParser(description=u'Tonalizer - CRF-based Tone Reconstitution Tool')
@@ -31,6 +30,7 @@ def main():
 	aparser.add_argument('-c', '--chunkmode', help='Chunking mode specification which is effective only for tone (default 3)', default=3, type=int)
 
 	aparser.add_argument('-d', '--diacritize', help='Use model F to diacritize raw text', default=None)
+	aparser.add_argument('-u', '--undiacritize', help='Undiacritize raw text', default=False, action='store_true')
 
 	aparser.add_argument('-f', '--filtering', help='Keep only one insertion for one poistion', default=False, action='store_true')
 
@@ -42,7 +42,8 @@ def main():
 
 	args = aparser.parse_args()
 
-	if not ((args.learn and args.infile) or (args.diacritize and args.outfile and args.infile)) :
+	if not ((args.learn and args.infile) or (args.diacritize and args.outfile and args.infile) or (args.undiacritize and args.infile and args.outfile)) :
+
 		aparser.print_help()
 		exit(0)
 
@@ -56,7 +57,11 @@ def main():
 				sys.stdout.write(u"({})".format(typeName))
 			print ""
 
-	if args.learn :
+	if args.undiacritize :
+		fr = fileReader.fileReader(args.markers)
+		fr.read2(args.infile, args.outfile)
+
+	elif args.learn :
 
 		fr = fileReader.fileReader(args.markers)
 		allsents = []
