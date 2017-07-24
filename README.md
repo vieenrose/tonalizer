@@ -24,26 +24,20 @@ sudo pip install python-Levenshtein python-crfsuite nltk
 
 
 ## General Functions
-- [x] Undiacritize a UTF-8 raw text (.txt)
-
-* Output the undiacritized result to screen
-```
-python tonalizer.py [input text filename] -u
-```
-
-* Output the undiacritized result to file
-```
-python tonalizer.py [input text filename] -o [output text filename] -u 
-```
-
-- [x] Generate a model file from a diacritized text and evaluate accuracy
+- [x] Undiacritize a UTF-8 raw text (.txt) and show result to screen by default, or to a file with option -o
 
 ```
-python tonalizer.py [input text filename] -l [model filename]
+python tonalizer.py input_text_filename -u [-o output text filename]
 ```
 
+- [x] Generate a model file from a diacritized text, then store it in a file and evaluate accuracy
+
+```
+python tonalizer.py input_text_filename -l model_filename
+```
 
 - [ ] Use a model to recover diacrtize of a new text
+
 
 ## Experiment Results (Preliminary)**
 
