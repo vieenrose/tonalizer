@@ -22,4 +22,4 @@ Tonalizer we propose here models tonalizaion of a tonalized text in UTF-8, and g
 
 **Reference**
 
-* (<a href="https://sourceforge.net/projects/tashkeela/" target="_blank">T. Zerrouki, A. Balla, Tashkeela: Novel corpus of Arabic vocalized texts, data for auto-diacritization systems, Data in Brief (2017)</a>)
+* T. Zerrouki, A. Balla, Tashkeela: Novel corpus of Arabic vocalized texts, data for auto-diacritization systems, Data in Brief (2017) <a href="https://sourceforge.net/projects/tashkeela/" target="_blank">link</a>
