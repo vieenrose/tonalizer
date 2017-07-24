@@ -23,7 +23,7 @@ sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 
 def main():
 
-	aparser = argparse.ArgumentParser(description=u'Tonalisation basée sur l\'apprentissags automatique')
+	aparser = argparse.ArgumentParser(description=u'Tonalizer - CRF-based Tone Reconstitution Tool')
 	aparser.add_argument('-v', '--verbose', help='Verbose output', default=False, action='store_true')
 	aparser.add_argument('-l', '--learn', help='Learn model from data (and save as F if provided)', default=None)
 
@@ -31,6 +31,7 @@ def main():
 	aparser.add_argument('-c', '--chunkmode', help='Chunking mode specification which is effective only for tone (default 3)', default=3, type=int)
 
 	aparser.add_argument('-d', '--diacritize', help='Use model F to diacritize raw text', default=None)
+
 	aparser.add_argument('-f', '--filtering', help='Keep only one insertion for one poistion', default=False, action='store_true')
 
 
@@ -57,16 +58,6 @@ def main():
 
 	if args.learn :
 
-		#print 'Make list of files'
-		#path = u"../Tashkeela-arabic-diacritized-text-utf8-0.3/texts.txt/"
-		"""
-		allfiles = []
-		if isinstance(path,unicode) : path = path.encode('utf-8')
-		for root, dirnames, filenames in os.walk(path):
-		    for filename in fnmatch.filter(filenames, '*.txt'):
-		        allfiles.append(os.path.join(root, filename))
-		"""
-		#fr = fileReader.fileReader(u"".join([unichr(x) for x in range(0x064B, 0x0652 + 1)]))
 		fr = fileReader.fileReader(args.markers)
 		allsents = []
 		print 'Making observation data from disambiggated corpus of which'
