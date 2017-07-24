@@ -11,7 +11,14 @@ Tonalizer we propose here models tonalizaion of a tonalized text in UTF-8, and g
 	
 **General Functions**
 - [ ] Undiacritize a UTF-8 raw text (.txt)
+
 - [x] Generate a model file from a diacritized text and evaluate accuracy
+
+```
+python tonalizer.py [input text filename] -l [model filename]
+```
+
+
 - [ ] Use a model to recover diacrtize of a new text
 
 **Experiment Results (Preliminary)**
