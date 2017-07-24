@@ -9,6 +9,20 @@ In many languages such as Bambara or Arabic, tone markers (diacritics) may be wr
 
 Tonalizer we propose here models tonalizaion of a tonalized text in UTF-8, and generate a model file. With the model file leant, tonalizer can performs reconstitue tone markers of a new raw text without diacritics. 
 	
+**System Requirements**
+* python >= 2.4
+* python-Levenshtein
+* python-crfsuite
+* nltk
+
+**Installation**
+
+* Unix-like Operation System (Linux, MacOS)
+```
+sudo pip install python-Levenshtein python-crfsuite nltk
+```
+
+
 **General Functions**
 - [ ] Undiacritize a UTF-8 raw text (.txt)
 
