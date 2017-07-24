@@ -24,7 +24,7 @@ sudo pip install python-Levenshtein python-crfsuite nltk
 
 
 ## General Functions
-- [x] Undiacritize a UTF-8 a UTF-8 stream via stdin and show result to stdout (PROGRAM is a command producing UTF-8 stream)
+- [x] Undiacritize a UTF-8 stream via stdin and show result to stdout (PROGRAM is a command producing UTF-8 stream)
 ```
 PROGRAM | python tonalizer.py -u
 ```
