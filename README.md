@@ -21,4 +21,5 @@ Tonalizer we propose here models tonalizaion of a tonalized text in UTF-8, and g
 | Tashkeela [2] |           |           |          |                                        |
 
 [1] L. Liu, D. NOUVEL, A Bambara tonalization system for word sense disambiguation using differential Coding, Segmentation and edit operation filtering (2017)
+
 [2] T. Zerrouki, A. Balla, Tashkeela: Novel corpus of Arabic vocalized texts, data for auto-diacritization systems, Data in Brief (2017)
