@@ -14,10 +14,10 @@ Tonalizer we propose models tonalizaion of a tonalized text in UTF-8, and genera
 - [ ] Use a model to recover diacrtize of a new text
 
 * Experiment Results (Preliminary)
-Corpus Origin, Size, Name, Obtained Accuracy
+
 | Ressource | File Size | File Name | Diacritieation Accuracy |
 |-----------|-----------|-----------|-------------------------|
-| [1](https://sourceforge.net/projects/tashkeela/) |      |      |          |
+|: [1]     :|           |           |                         |
 
 [1] T. Zerrouki, A. Balla, Tashkeela: Novel corpus of Arabic vocalized texts, data for auto-diacritization systems, Data in Brief (2017)
 
