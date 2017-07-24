@@ -54,7 +54,7 @@ PROGRAM | python tonalizer.py -l model -s report.csv
 - [ ] Use a model to recover diacrtize of a UTF-8 stream
 
 
-## Experiment Results (Preliminary)**
+## Experiment Results (Preliminary)
 
 |          Ressource | File Size | File Name | Language | Diacritization / Tonalization Accuracy |
 |:------------------:|----------:|:----------|:--------:|---------------------------------------:|

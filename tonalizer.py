@@ -172,55 +172,25 @@ def main():
 
 	elif args.diacritize and args.infile and args.outfile :
 
-		pass
-		"""
+		exit() # debug
+
+		fr = fileReader.fileReader(args.markers)
 		tagger = CRFTagger()
-		try :
-			html_parser.read_file(args.infile)
-		except IOError:
-			print "Error : unable to open the input file {} !".format(args.infile)
-			exit(1)
-		try :
-			myzip = zipfile.ZipFile(args.diacritize, 'r')
-		except IOError:
-			print "Error : unable to open the model file {} !".format((args.diacritize + '.zip'))
-			exit(1)
-
-		num_phases = 2 * len(mode_indicators)
-		taggers = []
-		enc = encoder_tones()
-		for phase in range(num_phases) :
-			taggers.append(CRFTagger())
-			taggers[phase].set_model_file(args.diacrtize)
-			os.remove(model_basename)
-		myzip.close()
-
-		for snum, sentence in enumerate(html_parser.glosses) :
-			tokens = [enc.differential_encode(token.token, token.token, args.chunkmode)[1] for token in sentence[2]]
-			for phase in range(num_phases) :
-				features = make_features_from_tokens(tokens, phase, True)
-				if taggers[phase]._model_file :
-					taggers[phase]._tagger.set(features)
-			for tnum, token in enumerate(sentence[2]) :
-				options = list()
-				if token.value and len(token.value) > 2:
-					for nopt, option in enumerate(token.value[2]) :
-						try: tag = option.form.encode('utf-8')
-						except : tag = ''
-						prob = marginal_tone(taggers, tnum, tokens, tag, token.token, sel_en = args.filtering, decomposition_en = False)
-						options.append((prob, option))
-
-					reordered_probs, reordered_options = unzip(sorted(options, key = lambda x : x[0], reverse = True))
-					if args.select :
-						prob_max = reordered_probs[0]
-						reordered_options = tuple([reordered_options[i] for i, p in enumerate(reordered_probs) if p >= prob_max])
-					html_parser.glosses[snum][1][tnum] = reordered_options
+		tagger.set_model_file(args.diacrtize)
+		
+		# B.2 Tagging segment by segment
+		for snum, sentence in enumerate(fr.read(args.infile)) :
+			# pure chunking
+			tokens = [enc.differential_encode(token[1], token[1], args.chunkmode)[1] for token in sentence]
+			features = make_features_from_tokens(tokens, True)
+			labels = tagger._tagger.tag(features)
+			labels = reshape_tokens_as_sentnece(labels, sent)
+			
 
 		try :
 			print "Disambiggated resulat for {} is saved in {}".format(args.infile,args.outfile)
 		except IOError:
 			print "Error : unable to create the output file {} !".format(args.outfile)
-		"""
 
 
 if __name__ == '__main__':
