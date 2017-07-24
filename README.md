@@ -1,4 +1,4 @@
-# Tonalizer - CRF-based Tone Reconstitution (or Diacritization) Tool
+# Tonalizer - CRF-based Tone Reconstitution Tool
 
 * Introduction
 
