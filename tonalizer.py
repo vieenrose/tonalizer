@@ -24,21 +24,21 @@ def main():
 
 	aparser = argparse.ArgumentParser(description=u'Tonalizer - CRF-based Tone Reconstitution Tool')
 	aparser.add_argument('-v', '--verbose', help='Verbose output', default=False, action='store_true')
-	aparser.add_argument('-l', '--learn', help='Learn model from data (and save as F if provided)', default=None)
+	aparser.add_argument('-l', '--learn', help='Learn model from diacritized text (and save as file if provided)', default=None)
 
 	aparser.add_argument('-e', '--evalsize', help='Percent of training data with respect to training and test one (default 10)', default=10, type=float)
-	aparser.add_argument('-c', '--chunkmode', help='Chunking mode specification which is effective only for tone (default 3)', default=3, type=int)
+	aparser.add_argument('-c', '--chunkmode', help='Word segmentation width (default 3)', default=3, type=int)
 
-	aparser.add_argument('-d', '--diacritize', help='Use model F to diacritize raw text', default=None)
-	aparser.add_argument('-u', '--undiacritize', help='Undiacritize raw text', default=False, action='store_true')
+	aparser.add_argument('-d', '--diacritize', help='Use model file to diacritize a raw text', default=None)
+	aparser.add_argument('-u', '--undiacritize', help='Undiacritize a raw text', default=False, action='store_true')
 
 	aparser.add_argument('-f', '--filtering', help='Keep only one insertion for one poistion', default=False, action='store_true')
 
-
-	aparser.add_argument('-m','--markers' , help='custumed set of markers to learn' , default=None, type=lambda s: unicode(s, 'utf8'))
-	aparser.add_argument('infile' , help='Input file (.txt)' , default=sys.stdin, type=lambda s: unicode(s, 'utf8'))
+	aparser.add_argument('-m','--markers' , help='Custumed set of markers to learn' , default=None, type=lambda s: unicode(s, 'utf8'))
+	aparser.add_argument('-i','--infile', help='Input file (.txt)' , default=sys.stdin, type=lambda s: unicode(s, 'utf8'))
 	aparser.add_argument('-o','--outfile', help='Output file (.txt)', default=sys.stdout, type=lambda s: unicode(s, 'utf8'))
-	aparser.add_argument('-s', '--store', help='Store evaluation resault in file (.csv) for further research purpose', default=None)
+
+	aparser.add_argument('-s', '--store', help='Store evaluation result in file (.csv), effective only in learning mode', default=None)
 
 	args = aparser.parse_args()
 
@@ -65,10 +65,11 @@ def main():
 
 		fr = fileReader.fileReader(args.markers)
 		allsents = []
-		print 'Making observation data from disambiggated corpus of which'
-		#for infile in allfiles:
+		print 'Making observation data from diacritized text'
 		if args.infile :
-			if isinstance(args.infile,str) :
+			if isinstance(args.infile, type(sys.stdin)) :
+				print u'\t','reading STDIN'
+			elif isinstance(args.infile,str) :
 				print u'\t', args.infile.decode('utf-8')
 			else :
 				print u'\t', args.infile
@@ -80,7 +81,7 @@ def main():
 					allsents.append(sent)
 					sent = []
 
-		print 'Token segmentation and tonal informaiotn compression'
+		print 'Word segmentation and diacritic informaiotn compression'
 		enc = encoder_tones()
 		allsents2 = allsents
 		allsents = []
@@ -106,13 +107,13 @@ def main():
 		# Initialization
 		t1 = time.time()
 
-		# A.1. Initialiser un nouveau modèle CRF
+		# A.1. Initialize a new CRF model
 		tagger = CRFTagger(verbose = args.verbose, training_opt = {'feature.minfreq' : 10})
 		trainer = pycrfsuite.Trainer(verbose = tagger._verbose)
 		trainer.set_params(tagger._training_options)
 		model_name = args.learn
 
-		# A.2. Mettre à plat les structures de données pour préparer l'entrâinement contextuel
+		# A.2. Prepare training set
 		for sent in train_set :
 			[tokens, labels] = make_tokens_from_sentence(sent, True)
 			features = make_features_from_tokens(tokens, True)
@@ -129,13 +130,13 @@ def main():
 		gold_set = eval_set
 		predicted_set_acc = list()
 
-		# B.1. Charger le modèle CRF pour une des quatre phases d'annoation tonale
+		# B.1. Load trained model
 		tagger = CRFTagger(verbose = args.verbose, training_opt = {'feature.minfreq' : 10})
 		trainer = pycrfsuite.Trainer(verbose = tagger._verbose)
 		trainer.set_params(tagger._training_options)
 		tagger.set_model_file(args.learn)
 
-		# B.2 Annotation automatique syllabe par syllabe pour une phrase
+		# B.2 Tagging segment by segment
 		predicted_set = list()
 		for p, sent in enumerate(gold_set) :
 
@@ -149,7 +150,7 @@ def main():
 				predicted_tokens.append(map(list, zip(tokens[i], labels[i])))
 			predicted_set.append(predicted_tokens)
 
-		# B.3 Accumuler en ordonner l'annotation syllabique
+		# B.3 Assemble segements to get annotated token
 		if not predicted_set_acc :
 			predicted_set_acc = \
 				[[[['',''] for syllabe in token] for token in sent] for sent in predicted_set]
@@ -216,7 +217,6 @@ def main():
 					html_parser.glosses[snum][1][tnum] = reordered_options
 
 		try :
-			#html_parser.write(args.outfile)
 			print "Disambiggated resulat for {} is saved in {}".format(args.infile,args.outfile)
 		except IOError:
 			print "Error : unable to create the output file {} !".format(args.outfile)
