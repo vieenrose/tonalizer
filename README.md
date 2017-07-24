@@ -17,14 +17,24 @@ Tonalizer we propose here models tonalizaion of a tonalized text in UTF-8, and g
 
 ## Installation
 
-* Unix-like Operation System (Linux, MacOS)
+* Unix-like Operating System (Linux, MacOS)
 ```
 sudo pip install python-Levenshtein python-crfsuite nltk
 ```
 
 
 ## General Functions
-- [ ] Undiacritize a UTF-8 raw text (.txt)
+- [x] Undiacritize a UTF-8 raw text (.txt)
+
+* Output the undiacritized result to screen
+```
+python tonalizer.py [input text filename] -u
+```
+
+* Output the undiacritized result to file
+```
+python tonalizer.py [input text filename] -o [output text filename] -u 
+```
 
 - [x] Generate a model file from a diacritized text and evaluate accuracy
 
