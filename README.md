@@ -25,32 +25,33 @@ sudo pip install python-Levenshtein python-crfsuite nltk
 
 ## General Functions
 ### Undiacritizing
-- [x] Undiacritize a UTF-8 stream received by stdin and show result to stdout (PROGRAM is a command producing UTF-8 stream)
+- [x] Undiacritize a UTF-8 stream received by stdin and show result to stdout
 ```
 PROGRAM | python tonalizer.py -u
 ```
 - [x] Undiacritize a UTF-8 raw text (.txt) and show result to stdout
 ```
-python tonalizer.py input_text_filename -u
+python tonalizer.py -i infile -u
 ```
 - [x] Undiacritize a UTF-8 raw text (.txt) and save result to file
 ```
-python tonalizer.py input_text_filename -u -o output text filename
+python tonalizer.py -i infile -u -o outfile
 ```
 
 ### Training
 - [x] Generate a model file from a diacritized text, then store it in a file and show accuracy to screen
 
 ```
-python tonalizer.py input_text_filename -l model_filename
+python tonalizer.py -i infile -l model -s report.csv
 ```
 - [x] Generate a model file from a UTF-8 stream received by stdin, then store it in a file and show accuracy to screen
 ```
-python tonalizer.py -l model_filename
+PROGRAM | python tonalizer.py -l model -s report.csv
 ```
 
 ### Diacritizing
 - [ ] Use a model to recover diacrtize of a new text
+- [ ] Use a model to recover diacrtize of a UTF-8 stream
 
 
 ## Experiment Results (Preliminary)**
