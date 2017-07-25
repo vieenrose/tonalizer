@@ -24,7 +24,7 @@ def main():
 
 	aparser = argparse.ArgumentParser(description=u'Tonalizer - CRF-based Tone Reconstitution Tool')
 	aparser.add_argument('-v', '--verbose', help='Verbose output', default=False, action='store_true')
-	aparser.add_argument('-l', '--learn', help='Learn model from diacritized text (and save as file if provided)', default=None)
+	aparser.add_argument('-l', '--learn', help='Learn model from diacritized text (and save as file if provided)', default=None,  type=lambda s: unicode(s, 'utf8'))
 
 	aparser.add_argument('-e', '--evalsize', help='Percent of training data with respect to training and test one (default 10)', default=10, type=float)
 	aparser.add_argument('-c', '--chunkmode', help='Word segmentation width (default 3)', default=3, type=int)
@@ -38,7 +38,7 @@ def main():
 	aparser.add_argument('-i','--infile', help='Input file (.txt)' , default=sys.stdin, type=lambda s: unicode(s, 'utf8'))
 	aparser.add_argument('-o','--outfile', help='Output file (.txt)', default=sys.stdout, type=lambda s: unicode(s, 'utf8'))
 
-	aparser.add_argument('-s', '--store', help='Store evaluation result in file (.csv), effective only in learning mode', default=None)
+	aparser.add_argument('-s', '--store', help='Store evaluation result in file (.csv), effective only in learning mode', default=None, type=lambda s: unicode(s, 'utf8'))
 
 	args = aparser.parse_args()
 
@@ -111,7 +111,7 @@ def main():
 		tagger = CRFTagger(verbose = args.verbose, training_opt = {'feature.minfreq' : 10})
 		trainer = pycrfsuite.Trainer(verbose = tagger._verbose)
 		trainer.set_params(tagger._training_options)
-		model_name = args.learn
+		model_name = args.learn.encode('utf-8')
 
 		# A.2. Prepare training set
 		for sent in train_set :
@@ -134,7 +134,8 @@ def main():
 		tagger = CRFTagger(verbose = args.verbose, training_opt = {'feature.minfreq' : 10})
 		trainer = pycrfsuite.Trainer(verbose = tagger._verbose)
 		trainer.set_params(tagger._training_options)
-		tagger.set_model_file(args.learn)
+		model_name = args.learn.encode('utf-8')
+		tagger.set_model_file(model_name)
 
 		# B.2 Tagging segment by segment
 		predicted_set = list()
