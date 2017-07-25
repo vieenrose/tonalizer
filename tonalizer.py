@@ -20,7 +20,7 @@ import fileReader
 sys.stdin = codecs.getreader('utf8')(sys.stdin)
 sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 
-
+chunkmode = 3
 
 def main():
 
@@ -28,7 +28,7 @@ def main():
 	aparser.add_argument('-v', '--verbose', help='Verbose output', default=False, action='store_true')
 	aparser.add_argument('-l', '--learn', help='Learn model from diacritized text (and save as file if provided)', default=None,  type=lambda s: unicode(s, 'utf8'))
 	aparser.add_argument('-e', '--evalsize', help='Percent of training data with respect to training and test one (default 10)', default=10, type=float)
-	aparser.add_argument('-c', '--chunkmode', help='Word segmentation width (default 3)', default=3, type=int)
+	#aparser.add_argument('-c', '--chunkmode', help='Word segmentation width (default 3)', default=3, type=int)
 	aparser.add_argument('-d', '--diacritize', help='Use model file to diacritize a raw text', default=None)
 	aparser.add_argument('-u', '--undiacritize', help='Undiacritize a raw text', default=False, action='store_true')
 	aparser.add_argument('-f', '--filtering', help='Keep only one insertion for one poistion', default=False, action='store_true')
@@ -76,7 +76,7 @@ def main():
 			sent2 = []
 			for token_tags in sent :
 				token, tags = token_tags
-				[codes, syllabes] = enc.differential_encode(token, tags.decode('utf-8'), args.chunkmode)
+				[codes, syllabes] = enc.differential_encode(token, tags.decode('utf-8'), chunkmode)
 				token2 = [(syllabe, code.encode('utf-8')) for syllabe, code in zip(syllabes, codes)]
 				sent2.append(token2)
 			allsents.append(sent2)
@@ -183,7 +183,7 @@ def main():
 			sent2 = []
 			for token in sent :
 				# here, we use encode as a simple chunker to get segment level
-				[NONE, chunks] = enc.differential_encode(token, token, args.chunkmode)
+				[NONE, chunks] = enc.differential_encode(token, token, chunkmode)
 				# put (chunk,chunk) instead of chunk to fit the input format of "make_tokens_from_sentence"
 				token2 = [(chunk, chunk) for chunk in chunks]
 				sent2.append(token2)
@@ -212,8 +212,8 @@ def main():
 					for syllabe in token :
 						# syllabe[0], syllabe[1] -> token by chunk, label by chunk
 						form += enc.differential_decode(syllabe[0], syllabe[1].decode('utf-8'))
-					fidout.write(form + u' ')
-				fidout.write(u'\n')
+					fidout.write(form)
+				#fidout.write(u'\n')
 
 
 if __name__ == '__main__':

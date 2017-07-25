@@ -623,29 +623,29 @@ class statistique () :
 	def __str__(self) :
 
 		ret  = u""
-		ret += u"Sur un ensemble de corpus de {} mot(s)\n".format(str(self.num))
-		ret += u"Entropies globales\n"
+		ret += u"Over a corpus of {} word(s)\n".format(str(self.num))
+		ret += u"Global Entropy\n"
 		ret += u"\tE(Token)        = {:<6.2f} \n".format(entropy(self.form_non_tonal))
-		ret += u"\tE(Forme tonale) = {:<6.2f} \n".format(entropy(self.form_tonal))
-		ret += u"\tE(Code produit) = {:<6.2f} \n".format(entropy(self.code2))
-		ret += u"\tr_E(Code produit) = {:<6.2f} \n".format(entropy(self.form_tonal)/entropy(self.code2))
+		ret += u"\tE(Tonalized Forme) = {:<6.2f} \n".format(entropy(self.form_tonal))
+		ret += u"\tE(Resulting Code) = {:<6.2f} \n".format(entropy(self.code2))
+		ret += u"\tr_E(Resulting Code) = {:<6.2f} \n".format(entropy(self.form_tonal)/entropy(self.code2))
 
-		ret += u"Entropies par token (en moyenne)\n"
-                ret += u"\tE(Forme tonale) = {:<6.2f} \n".\
+		ret += u"Entropy by token (by average)\n"
+                ret += u"\tE(Tonalized Form) = {:<6.2f} \n".\
 			format(entropy2(self.dict_form_tonal, cnty = self.form_tonal, cntx = self.form_non_tonal))
-                ret += u"\tE(Code produit) = {:<6.2f} \n".\
+                ret += u"\tE(Resulting Code) = {:<6.2f} \n".\
 			format(entropy2(self.dict_code, cnty = self.code, cntx = self.form_non_tonal))
-		ret += u"Distance entre une forme tonale et son token (en moyenne) = {:<6.2f} \n".format(self.cnt_ops / float(self.num))
+		ret += u"Levanshtein Distance between a tonalized form and its token (by average) = {:<6.2f} \n".format(self.cnt_ops / float(self.num))
 
-		ret += u"Distribution sur : \n"
-		ret += u"\tLes opérations d'édition : \n" + sprint_cnt(self.mode, u"\t\t",-1,20)
-		ret += u"\tL'ensemble des codes par syllabe : \n" + sprint_cnt(self.code, u"\t\t",-1,20)
-		ret += u"\tL'ensemble des codes par leur segment atomique : \n" + sprint_cnt(self.segment_code, u"\t\t",-1,20)
-		ret += u"\tL'ensemble des caractères supprimés : \n" + sprint_cnt(self.src_delete, u"\t\t",-1,20)
-		ret += u"\tL'ensemble des caractères inserés : \n" + sprint_cnt(self.dst_insert, u"\t\t",-1,20)
+		ret += u"Distribution over : \n"
+		ret += u"\tEdit Operations : \n" + sprint_cnt(self.mode, u"\t\t",-1,20)
+		ret += u"\tTotality of codes by chunk : \n" + sprint_cnt(self.code, u"\t\t",-1,20)
+		ret += u"\tTotality of codes by edit operaiton : \n" + sprint_cnt(self.segment_code, u"\t\t",-1,20)
+		ret += u"\tTotality of caracters deleted : \n" + sprint_cnt(self.src_delete, u"\t\t",-1,20)
+		ret += u"\tTotality of caracters inserted : \n" + sprint_cnt(self.dst_insert, u"\t\t",-1,20)
 
 		if self.err_cnt :
-			ret += u"\nErreur : nombre d'erreurs rencontrés dans le codage = {}\n".format(self.err_cnt)
+			ret += u"\nError : error rate in tone coding given by auto-verification = {}\n".format(self.err_cnt)
 		return ret
 
 class encoder_tones () :
