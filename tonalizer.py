@@ -160,7 +160,7 @@ def main():
 
 		# A.1. Load a CRF tagger
 		tagger = CRFTagger()
-		tagger.set_model_file(args.diacrtize.encode('utf-8'))
+		tagger.set_model_file(args.diacritize.encode('utf-8'))
 
 		# Making observation data from undiacritized text
 		fr = fileReader.fileReader(args.markers)
@@ -205,19 +205,15 @@ def main():
 
 	        # simple raw file writer
 		enc = encoder_tones()
-		with utf8_open(args.outfile, 'w') as fidout :
+		with fileReader.utf8_open(args.outfile, 'w') as fidout :
 			for sent in predicted_set :
 				for token in sent :
+					form = u''
 					for syllabe in token :
 						# syllabe[0], syllabe[1] -> token by chunk, label by chunk
 						form += enc.differential_decode(syllabe[0], syllabe[1].decode('utf-8'))
 					fidout.write(form + u' ')
 				fidout.write(u'\n')
-
-		try :
-			print "Disambiggated resulat for {} is saved in {}".format(args.infile,args.outfile)
-		except IOError:
-			print "Error : unable to create the output file {} !".format(args.outfile)
 
 
 if __name__ == '__main__':
