@@ -174,8 +174,8 @@ def main():
 			sent = []
 			for token in sentence :
 				sent.append(token[1]) # token[1] : non-processed token from a undiacritized text
-			if len(sent) > 1:
-				allsents.append(sent)
+			#if len(sent) > 1:
+			allsents.append(sent)
 
 		# Word segmentation
 		enc = encoder_tones()

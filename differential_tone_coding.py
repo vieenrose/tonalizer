@@ -511,7 +511,8 @@ def reshaping (token) :
 	"""
 
 	token = unicodedata.normalize('NFD', token)
-	return token.lower()
+	#return token.lower()
+	return token
 
 def mode_position_encoder (token, position, mode_id, chunks, offset = 0, code_seperator_in = code_seperator) :
 
