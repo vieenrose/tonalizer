@@ -25,10 +25,12 @@ def utf8_open(file, mode = 'r', encoding = 'utf-8') :
 class fileReader () :
 
 	def __init__(self, customed_markers = "") :
-		self.strp = \
+		"""
+		self.strp =  \
 			self.__get_cat_startwith('Zl') + \
 			self.__get_cat_startwith('Zp') + \
 			self.__get_cat_startwith('Zs') + '\n'
+		"""
 	        self.sep_sent  = \
 			self.__get_cat_startwith('Pi') + \
 			self.__get_cat_startwith('Pf') + \
@@ -45,17 +47,19 @@ class fileReader () :
 	def read(self, filein) : # golden set
 
 		pat1   = u'([{}]+)'.format(self.sep_sent)
-		pat2   = u'[{}]+'  .format(self.sep_token)
+		pat2   = u'([{}]+)'.format(self.sep_token)
 
 		self.regex1 = re.compile(pat1, flags = re.IGNORECASE)
 		self.regex2 = re.compile(pat2, flags = re.IGNORECASE)
 		with utf8_open(filein) as file :
 			sentences = list()
 			for n, line in enumerate(file) :
-				para = line.strip(self.strp)
+				para = line # line.strip(self.strp)
 				sents = self.regex1.split(para)
+				if para != ''.join(sents) : print "bad sentence segmentation"
 				for sent in sents :
 					tokens = self.regex2.split(sent)
+					if sent != ''.join(tokens) : print "bad tokenization"
 					sentence = list()
 					for token in tokens :
 						token_masked = self.__mask(token)
@@ -81,6 +85,8 @@ class fileReader () :
 	def __get_cat_startwith(self, str_in) :
 		return u"".join([unichr(i) for i in xrange(sys.maxunicode) \
 			if unicodedata.category(unichr(i)).startswith(str_in)])
+	def get_cat_startwith(self, str_in) :
+		return self.__get_cat_startwith(str_in)
 
 def view_allsents(sentences) :
 	s_num = 0

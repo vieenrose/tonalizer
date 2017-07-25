@@ -204,16 +204,31 @@ def main():
 			predicted_set.append(predicted_tokens)
 
 	        # simple raw file writer
+		cara_to_ignore = \
+                fr.get_cat_startwith('Zl') + \
+                fr.get_cat_startwith('Zp') + \
+                fr.get_cat_startwith('Zs') + u'\n' + \
+                fr.get_cat_startwith('Pi') + \
+                fr.get_cat_startwith('Pf') + \
+                fr.get_cat_startwith('Po')
+
+
 		enc = encoder_tones()
 		with fileReader.utf8_open(args.outfile, 'w') as fidout :
 			for sent in predicted_set :
 				for token in sent :
 					form = u''
 					for syllabe in token :
+						if type(syllabe[0].encode('utf-8')) == type(cara_to_ignore) :
+							print "good syllabe type"
+						else :
+							print "bad syllabe type"
 						# syllabe[0], syllabe[1] -> token by chunk, label by chunk
-						form += enc.differential_decode(syllabe[0], syllabe[1].decode('utf-8'))
+						if syllabe[0].encode('utf-8') in cara_to_ignore :
+							form += syllabe[0].encode('utf-8')
+						else :
+							form += enc.differential_decode(syllabe[0], syllabe[1].decode('utf-8'))
 					fidout.write(form)
-				#fidout.write(u'\n')
 
 
 if __name__ == '__main__':
