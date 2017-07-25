@@ -63,10 +63,11 @@ class fileReader () :
 					sentence = list()
 					for token in tokens :
 						token_masked = self.__mask(token)
-						if token and token_masked:
+						#if token and token_masked:
+						if token :
 							sentence.append([token_masked, self.__unicode_decomp(token)])
-					if sentence :
-						sentences.append(sentence)
+					#if sentence :
+					sentences.append(sentence)
 		return sentences
 
 	def read2(self, filein, fileout) : # undiacritized

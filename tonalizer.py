@@ -156,6 +156,8 @@ def main():
 
 	elif args.diacritize and args.infile and args.outfile :
 
+
+		t1 = time.time()
 		# todo : store and load chunkmode value
 
 		# A.1. Load a CRF tagger
@@ -196,6 +198,7 @@ def main():
 			[tokens, NONE] = make_tokens_from_sentence(sent, True)
 			features = make_features_from_tokens(tokens, True)
 			labels = tagger._tagger.tag(features)
+			if args.verbose : sys.stdout.write(u"{}/{}\n".format(p,len(allsents)))
 			labels = reshape_tokens_as_sentnece(labels, sent)
 
 			predicted_tokens = list()
@@ -219,17 +222,19 @@ def main():
 				for token in sent :
 					form = u''
 					for syllabe in token :
-						if type(syllabe[0].encode('utf-8')) == type(cara_to_ignore) :
-							print "good syllabe type"
-						else :
-							print "bad syllabe type"
+						#if type(syllabe[0]) == type(cara_to_ignore) :
+						#	print "good syllable type"
+						#else :
+						#	print "bad syllable type"
 						# syllabe[0], syllabe[1] -> token by chunk, label by chunk
-						if syllabe[0].encode('utf-8') in cara_to_ignore :
-							form += syllabe[0].encode('utf-8')
+						if syllabe[0] in cara_to_ignore :
+							form += syllabe[0]
 						else :
 							form += enc.differential_decode(syllabe[0], syllabe[1].decode('utf-8'))
 					fidout.write(form)
+				#fidout.write('\n')
 
+		print "... done in", get_duration(t1_secs = t1, t2_secs = time.time())
 
 if __name__ == '__main__':
 	main()
