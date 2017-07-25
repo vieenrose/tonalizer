@@ -50,8 +50,19 @@ PROGRAM | python tonalizer.py -l model -s report.csv
 ```
 
 ### Diacritizing
-- [ ] Use a model to recover diacrtize of a new text
-- [ ] Use a model to recover diacrtize of a UTF-8 stream
+- [x] Use a model to recover diacrtize of a UTF-8 stream, then outputs to screen
+```
+PROGRAM | python tonalizer.py -d model 
+```
+- [x] Use a model to recover diacrtize of a new text, then outputs to a file
+```
+python tonalizer.py -i infile -d model -o outfile
+```
+- [x] Use a model to recover diacrtize of a UTF-8 stream, then outputs to a file
+```
+PROGRAM | python tonalizer.py -d model -o outfile 
+```
+
 
 
 ## Experiment Results (Preliminary)
