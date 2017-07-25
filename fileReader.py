@@ -3,18 +3,6 @@
 
 import unicodedata,argparse,codecs,sys,re
 
-def intersection (str, file) :
-
-	ret = u''
-	with codecs.open(file, 'r', 'utf-8') as f:
-		for l in f :
-			for c in str :
-				if c in l and c not in ret:
-					ret += c
-					break
-
-	return ret
-
 class fileReader () :
 
 	def __init__(self, customed_markers = "") :
@@ -33,32 +21,70 @@ class fileReader () :
 			self.markers = self.__get_cat_startwith('Mn')
 		else :
 			self.markers = customed_markers
-		print "init."
+		#print "init."
 
-	def read(self, filein) :
+	def read(self, filein) : # golden set
 
-		pat1   = u'([{}]+)'.format(intersection(self.sep_sent , filein))
-		pat2   = u'[{}]+'  .format(intersection(self.sep_token, filein))
+		pat1   = u'([{}]+)'.format(self.sep_sent)
+		pat2   = u'[{}]+'  .format(self.sep_token)
 
 		self.regex1 = re.compile(pat1, flags = re.IGNORECASE)
 		self.regex2 = re.compile(pat2, flags = re.IGNORECASE)
 
         	sentences = list()
-		with codecs.open(filein, 'r', 'utf-8') as file:
-			for n, line in enumerate(file) :
-				para = line.strip(self.strp)
-				sents = self.regex1.split(para)
-				for sent in sents :
-					tokens = self.regex2.split(sent)
-					sentence = list()
-					for token in tokens :
-						token_masked = self.__mask(token)
-						if token and token_masked:
-							sentence.append([token_masked, self.__unicode_decomp(token)])
-					if sentence :
-						sentences.append(sentence)
-				#print n
+
+		if isinstance(filein, type(sys.stdin)) :
+			file = filein
+		else :
+			try :
+				file = codecs.open(filein, 'r', 'utf-8')
+			except :
+				print ('Error : unable to open file to read !')
+				exit()
+
+
+		for n, line in enumerate(file) :
+			para = line.strip(self.strp)
+			sents = self.regex1.split(para)
+			for sent in sents :
+				tokens = self.regex2.split(sent)
+				sentence = list()
+				for token in tokens :
+					token_masked = self.__mask(token)
+					if token and token_masked:
+						sentence.append([token_masked, self.__unicode_decomp(token)])
+				if sentence :
+					sentences.append(sentence)
+		if file :
+			file.close()
 		return sentences
+
+	def read2(self, filein, fileout) : # undiacritized
+
+		if isinstance(filein, type(sys.stdout)) :
+                        fidin = filein
+                else :
+			try :
+	                        fidin = codecs.open(filein,'r','utf-8')
+			except :
+				print('Error : unable to open file to read')
+				exit()
+
+		if isinstance(fileout, type(sys.stdout)) :
+			fidout = fileout
+		else :
+			try :
+				fidout = codecs.open(fileout,'w','utf-8')
+                        except :
+                                print('Error : unable to open file to write')
+                                exit()
+
+		for line in fidin : fidout.write(self.__mask(line))
+
+		if fidin :
+			fidin.close()
+		if fidout :
+			fidout.close()
 
 	def __unicode_decomp(self, str_in) :
 		return unicodedata.normalize('NFD', str_in)
