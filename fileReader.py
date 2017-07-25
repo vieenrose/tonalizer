@@ -49,7 +49,6 @@ class fileReader () :
 
 		self.regex1 = re.compile(pat1, flags = re.IGNORECASE)
 		self.regex2 = re.compile(pat2, flags = re.IGNORECASE)
-        
 		with utf8_open(filein) as file :
 			sentences = list()
 			for n, line in enumerate(file) :
@@ -64,7 +63,6 @@ class fileReader () :
 							sentence.append([token_masked, self.__unicode_decomp(token)])
 					if sentence :
 						sentences.append(sentence)
-						
 		return sentences
 
 	def read2(self, filein, fileout) : # undiacritized
