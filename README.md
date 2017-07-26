@@ -67,10 +67,13 @@ PROGRAM | python tonalizer.py -d model -o outfile
 
 ## Experiment Results (Preliminary)
 
-|          Ressource | File Size | File Name | Language | Diacritization / Tonalization Accuracy |
-|:------------------:|----------:|:----------|:--------:|---------------------------------------:|
-| T. Zerrouki et al. |           |           |          |                                        |
+|          Ressource | File Size | File Name                      | Language | Accuracy | Train/Test Ratio |
+|:------------------:|----------:|:-------------------------------|:--------:|---------:|:----------------:|
+| Project Gutenberg. |   696 KB  | pg17489.txt                    | French   | 0.975    | 90 : 10          |
+| T. Zerrouki et al. |           | معالم القربة في طلب الحسبة.txt | Arabic   |          |                  |
 
 **Reference**
 
+* Project Gutenberg. (n.d.). Retrieved July 26, 2017, from www.gutenberg.org. <a href="https://www.gutenberg.org/" target="_blank">link</a>
 * T. Zerrouki, A. Balla, Tashkeela: Novel corpus of Arabic vocalized texts, data for auto-diacritization systems, Data in Brief (2017) <a href="https://sourceforge.net/projects/tashkeela/" target="_blank">link</a>
+
