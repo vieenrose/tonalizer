@@ -68,7 +68,7 @@ PROGRAM | python tonalizer.py -d model -o outfile
 ## Experiment Results (Preliminary)
 
 |          Ressource | File Size | File Name                      | Language | Accuracy | Train/Test Ratio |
-|:------------------:|----------:|:-------------------------------|:--------:|---------:|:----------------:|
+|:------------------:|----------:|:-------------------------------|:--------:|:--------:|:----------------:|
 | Project Gutenberg. |   696 KB  | pg17489.txt                    | French   | 0.975    | 90 : 10          |
 | T. Zerrouki et al. |           | معالم القربة في طلب الحسبة.txt | Arabic   |          |                  |
 
