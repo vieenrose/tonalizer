@@ -234,7 +234,7 @@ def main():
 					fidout.write(form)
 				#fidout.write('\n')
 
-		print "... done in", get_duration(t1_secs = t1, t2_secs = time.time())
+			print u"... done in", get_duration(t1_secs = t1, t2_secs = time.time())
 
 if __name__ == '__main__':
 	main()
