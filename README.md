@@ -64,6 +64,19 @@ PROGRAM | python tonalizer.py -d model -o outfile
 ```
 
 
+### Using pre-trained models
+
+- [x] French
+```
+PROGRAM | python tonalizer.py -d models/fr.mdl 
+```
+- [x] Arabic
+```
+PROGRAM | python tonalizer.py -d model 
+```
+
+
+
 
 ## Experiment Results (Preliminary)
 

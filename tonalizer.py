@@ -68,7 +68,7 @@ def main():
 			if len(sent) > 1:
 				allsents.append(sent)
 
-		print 'Word segmentation and diacritic informaiotn compression'
+		print 'Word segmentation and diacritic information compression'
 		enc = encoder_tones()
 		allsents2 = allsents
 		allsents = []
