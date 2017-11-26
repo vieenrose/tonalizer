@@ -93,7 +93,7 @@ def main():
 		t1 = time.time()
 
 		# A.1. Initialize a new CRF trainer
-		tagger = CRFTagger(verbose = args.verbose, training_opt = {'feature.minfreq' : 10})
+		tagger = CRFTagger(verbose = args.verbose, training_opt = {'feature.minfreq' : 5})
 		trainer = pycrfsuite.Trainer(verbose = tagger._verbose)
 		trainer.set_params(tagger._training_options)
 
