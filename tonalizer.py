@@ -32,7 +32,7 @@ def main():
 	aparser.add_argument('-d', '--diacritize', help='Use model file to diacritize a raw text', default=None)
 	aparser.add_argument('-u', '--undiacritize', help='Undiacritize a raw text', default=False, action='store_true')
 	aparser.add_argument('-f', '--filtering', help='Keep only one insertion for one poistion', default=False, action='store_true')
-	aparser.add_argument('-m','--markers' , help='Custumed set of markers to learn' , default=None, type=lambda s: unicode(s, 'utf8'))
+	aparser.add_argument('-m','--markers' , help='Customized set of markers to learn' , default=None, type=lambda s: unicode(s, 'utf8'))
 	aparser.add_argument('-i','--infile', help='Input file (.txt)' , default=sys.stdin, type=lambda s: unicode(s, 'utf8'))
 	aparser.add_argument('-o','--outfile', help='Output file (.txt)', default=sys.stdout, type=lambda s: unicode(s, 'utf8'))
 	aparser.add_argument('-s', '--store', help='Store evaluation result in file (.csv), effective only in learning mode', default=None, type=lambda s: unicode(s, 'utf8'))
@@ -68,7 +68,7 @@ def main():
 			if len(sent) > 1:
 				allsents.append(sent)
 
-		print 'Word segmentation and diacritic informaiotn compression'
+		print 'Word segmentation and diacritic information compression'
 		enc = encoder_tones()
 		allsents2 = allsents
 		allsents = []
@@ -93,7 +93,7 @@ def main():
 		t1 = time.time()
 
 		# A.1. Initialize a new CRF trainer
-		tagger = CRFTagger(verbose = args.verbose, training_opt = {'feature.minfreq' : 10})
+		tagger = CRFTagger(verbose = args.verbose, training_opt = {'feature.minfreq' : 5})
 		trainer = pycrfsuite.Trainer(verbose = tagger._verbose)
 		trainer.set_params(tagger._training_options)
 

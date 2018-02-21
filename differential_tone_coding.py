@@ -427,7 +427,19 @@ def get_features_customised_tone(tokens, i, j) :
 	feature_list.append(u'SUFFIXE_ACTUEL_' + syllabes[-1])
 	try    : feature_list.append(u'SYLLABE_QUI_PRECEDE_' + syllabes[j - 1])
 	except : pass
+	try    : feature_list.append(u'SYLLABE_QUI_PRECEDE2_' + syllabes[j - 2])
+	except : pass
+	try    : feature_list.append(u'SYLLABE_QUI_PRECEDE3_' + syllabes[j - 3])
+	except : pass
+	try    : feature_list.append(u'SYLLABE_QUI_PRECEDE4_' + syllabes[j - 4])
+	except : pass
 	try    : feature_list.append(u'SYLLABE_QUI_SUIT_' + syllabes[j + 1])
+	except : pass
+	try    : feature_list.append(u'SYLLABE_QUI_SUIT2_' + syllabes[j + 2])
+	except : pass
+	try    : feature_list.append(u'SYLLABE_QUI_SUIT3_' + syllabes[j + 3])
+	except : pass
+	try    : feature_list.append(u'SYLLABE_QUI_SUIT4_' + syllabes[j + 4])
 	except : pass
 
 	# châine de caractères au niveau du vocable qui précède et celui qui suit
